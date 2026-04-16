@@ -3,137 +3,453 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bouquet Picker</title>
+    <title>💐 Bouquet Picker - I Love You 💐</title>
     <style>
-        body {
-            font-family: 'Comic Sans MS', cursive, sans-serif;
-            background-color: #fef6e4;
+        * {
             margin: 0;
-            padding: 20px;
-            text-align: center;
+            padding: 0;
+            box-sizing: border-box;
         }
-        h1 {
-            color: #4a2074;
-        }
-        .flowers {
+
+        body {
+            font-family: 'Comic Sans MS', 'Segoe UI', cursive, sans-serif;
+            background: linear-gradient(135deg, #fef6e4 0%, #ffe5f0 100%);
+            min-height: 100vh;
+            padding: 30px 20px;
             display: flex;
             justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            background: white;
+            border-radius: 30px;
+            padding: 40px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #d946a6;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #999;
+            margin-bottom: 40px;
+            font-size: 1.1em;
+        }
+
+        .main-content {
+            display: flex;
+            gap: 40px;
+            justify-content: space-between;
             flex-wrap: wrap;
         }
-        .flower {
+
+        .flowers-section {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .flowers-title {
+            color: #d946a6;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .flowers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: 15px;
+        }
+
+        .flower-card {
+            background: #f9f4ff;
+            border: 3px solid #e0b0ff;
+            border-radius: 15px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .flower-card:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 25px rgba(217, 70, 166, 0.2);
+        }
+
+        .flower-svg {
             width: 100px;
             height: 100px;
-            margin: 10px;
-            border-radius: 50%;
-            border: 2px solid #4a2074;
-            cursor: pointer;
-            position: relative;
-            transition: transform 0.2s;
+            margin: 0 auto 10px;
+            display: block;
         }
-        .flower:hover {
-            transform: scale(1.1);
+
+        .flower-name {
+            font-weight: bold;
+            color: #666;
+            font-size: 0.9em;
         }
-        .bouquet {
-            margin-top: 20px;
-            border: 2px dashed #4a2074;
-            padding: 10px;
-            display: inline-block;
-            position: relative;
+
+        .bouquet-section {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
         }
-        .finish-button {
-            margin-top: 20px;
-            padding: 10px 20px;
-            background-color: #4a2074;
+
+        .bouquet-title {
+            color: #d946a6;
+            margin-bottom: 20px;
+            font-size: 1.3em;
+        }
+
+        .bouquet-container {
+            flex: 1;
+            background: linear-gradient(135deg, #fff5fb 0%, #f0e6ff 100%);
+            border: 3px dashed #d946a6;
+            border-radius: 15px;
+            padding: 20px;
+            min-height: 300px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .bouquet-empty {
+            color: #ccc;
+            text-align: center;
+            font-style: italic;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+        }
+
+        .bouquet-item {
+            background: white;
+            border: 2px solid #d946a6;
+            border-radius: 10px;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            animation: slideIn 0.3s ease;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .remove-btn {
+            background: #ff6b6b;
             color: white;
             border: none;
-            border-radius: 5px;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
             cursor: pointer;
+            font-weight: bold;
+            transition: background 0.2s;
         }
-        .heart {
-            position: absolute;
-            color: red;
-            font-size: 24px;
-            animation: fall 2s forwards;
-            opacity: 0;
+
+        .remove-btn:hover {
+            background: #ff5252;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .finish-button, .clear-button {
+            flex: 1;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .finish-button {
+            background: linear-gradient(135deg, #d946a6 0%, #ec4899 100%);
+            color: white;
+        }
+
+        .finish-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(217, 70, 166, 0.4);
+        }
+
+        .clear-button {
+            background: #f0f0f0;
+            color: #666;
+        }
+
+        .clear-button:hover {
+            background: #e0e0e0;
+        }
+
+        .finish-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 60px;
+            border-radius: 30px;
+            text-align: center;
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.3);
+            z-index: 1000;
+            animation: popIn 0.5s ease;
+        }
+
+        @keyframes popIn {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+
+        .bouquet-visual {
+            font-size: 4em;
+            margin: 20px 0;
+            animation: bounce 0.8s ease infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        .love-card {
+            font-size: 2em;
+            color: #d946a6;
+            margin: 30px 0;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .heart-animation {
+            position: fixed;
+            font-size: 3em;
             pointer-events: none;
+            animation: fall 3s ease-in forwards;
+            z-index: 999;
         }
+
         @keyframes fall {
             0% {
-                transform: translateY(0);
                 opacity: 1;
+                transform: translateY(-100px) rotate(0deg);
             }
             100% {
-                transform: translateY(500px);
                 opacity: 0;
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            z-index: 999;
+        }
+
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+            }
+            h1 {
+                font-size: 1.8em;
             }
         }
     </style>
 </head>
 <body>
-    <h1>Bouquet Picker</h1>
-    <div class="flowers">
-        <div class="flower" style="background-color: #ff6f61;" data-flower="Hibiscus">Hibiscus</div>
-        <div class="flower" style="background-color: #d166d1;" data-flower="Peonies">Peonies</div>
-        <div class="flower" style="background-color: #ffc300;" data-flower="Tulips">Tulips</div>
-        <div class="flower" style="background-color: #f5a623;" data-flower="Alstromelia">Alstromelia</div>
-        <div class="flower" style="background-color: #ff80c6;" data-flower="Gerbera">Gerbera</div>
-        <div class="flower" style="background-color: #82b9a0;" data-flower="Lilium">Lilium</div>
+    <div class="container">
+        <h1>🌸 Bouquet Picker 🌸</h1>
+        <p class="subtitle">Pick your favorite flowers to create a special bouquet!</p>
+
+        <div class="main-content">
+            <!-- Flowers Section -->
+            <div class="flowers-section">
+                <h2 class="flowers-title">Available Flowers</h2>
+                <div class="flowers-grid" id="flowersGrid"></div>
+            </div>
+
+            <!-- Bouquet Section -->
+            <div class="bouquet-section">
+                <h2 class="bouquet-title">Your Bouquet</h2>
+                <div class="bouquet-container" id="bouquetContainer">
+                    <div class="bouquet-empty">Click flowers to add them here!</div>
+                </div>
+                <div class="button-group">
+                    <button class="finish-button" onclick="finishBouquet()">💝 Finish Bouquet</button>
+                    <button class="clear-button" onclick="clearBouquet()">Clear All</button>
+                </div>
+            </div>
+        </div>
     </div>
-    <div class="bouquet" id="bouquet"></div>
-    <button class="finish-button" onclick="finishBouquet()">Finish</button>
+
     <script>
-        const bouquetElement = document.getElementById('bouquet');
+        const flowers = [
+            { name: 'Hibiscus', colors: ['#FF6B9D', '#FF4757', '#FFA502'] },
+            { name: 'Peonies', colors: ['#FFB6C1', '#FF69B4', '#FF1493'] },
+            { name: 'Tulips', colors: ['#FFD700', '#FF6347', '#8A2BE2'] },
+            { name: 'Alstroemeria', colors: ['#FFA500', '#FF8C00', '#FF69B4'] },
+            { name: 'Gerbera', colors: ['#FFB347', '#FF6347', '#FF0000'] },
+            { name: 'Lilium', colors: ['#FF69B4', '#FFB6C1', '#FF1493'] }
+        ];
 
-        document.querySelectorAll('.flower').forEach(flower => {
-            flower.addEventListener('click', () => {
-                const flowerName = flower.getAttribute('data-flower');
-                addFlowerToBouquet(flowerName);
-            });
-        });
+        let bouquet = [];
 
-        function addFlowerToBouquet(flowerName) {
-            const flowerDiv = document.createElement('div');
-            flowerDiv.innerText = flowerName;
-            flowerDiv.style.position = 'relative';
-            flowerDiv.style.display = 'inline-block';
-            flowerDiv.style.padding = '5px';
-            flowerDiv.style.border = '1px solid #4a2074';
-            flowerDiv.style.borderRadius = '5px';
-            flowerDiv.style.margin = '5px';
-            flowerDiv.innerHTML += ' <span style="color:red; cursor:pointer;" onclick="removeFlower(this)">X</span>';
-            bouquetElement.appendChild(flowerDiv);
+        function createFlowerSVG(color) {
+            return `
+                <svg viewBox="0 0 100 100" class="flower-svg">
+                    <!-- Petals -->
+                    <ellipse cx="50" cy="25" rx="12" ry="20" fill="${color}" opacity="0.9" transform="rotate(0 50 50)"/>
+                    <ellipse cx="50" cy="25" rx="12" ry="20" fill="${color}" opacity="0.9" transform="rotate(72 50 50)"/>
+                    <ellipse cx="50" cy="25" rx="12" ry="20" fill="${color}" opacity="0.9" transform="rotate(144 50 50)"/>
+                    <ellipse cx="50" cy="25" rx="12" ry="20" fill="${color}" opacity="0.9" transform="rotate(216 50 50)"/>
+                    <ellipse cx="50" cy="25" rx="12" ry="20" fill="${color}" opacity="0.9" transform="rotate(288 50 50)"/>
+                    
+                    <!-- Center -->
+                    <circle cx="50" cy="50" r="8" fill="#FFD700"/>
+                    
+                    <!-- Stem -->
+                    <line x1="50" y1="50" x2="50" y2="95" stroke="#2D5016" stroke-width="3" stroke-linecap="round"/>
+                    
+                    <!-- Leaf -->
+                    <path d="M 50 70 Q 40 75 38 85" stroke="#4A7023" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+                </svg>
+            `;
         }
 
-        function removeFlower(element) {
-            const flowerDiv = element.parentElement;
-            bouquetElement.removeChild(flowerDiv);
+        function initializeFlowers() {
+            const grid = document.getElementById('flowersGrid');
+            flowers.forEach((flower, flowerIndex) => {
+                flower.colors.forEach((color, colorIndex) => {
+                    const card = document.createElement('div');
+                    card.className = 'flower-card';
+                    card.onclick = () => addFlowerToBouquet(flower.name, color);
+                    card.innerHTML = `
+                        ${createFlowerSVG(color)}
+                        <div class="flower-name">${flower.name}</div>
+                    `;
+                    grid.appendChild(card);
+                });
+            });
+        }
+
+        function addFlowerToBouquet(flowerName, color) {
+            bouquet.push({ name: flowerName, color: color });
+            updateBouquetDisplay();
+        }
+
+        function removeFlowerFromBouquet(index) {
+            bouquet.splice(index, 1);
+            updateBouquetDisplay();
+        }
+
+        function updateBouquetDisplay() {
+            const container = document.getElementById('bouquetContainer');
+            if (bouquet.length === 0) {
+                container.innerHTML = '<div class="bouquet-empty">Click flowers to add them here!</div>';
+                return;
+            }
+
+            container.innerHTML = bouquet.map((flower, index) => `
+                <div class="bouquet-item">
+                    <div style="display: flex; align-items: center; gap: 10px;">
+                        <div style="width: 20px; height: 20px; background-color: ${flower.color}; border-radius: 50%; box-shadow: 0 2px 8px rgba(0,0,0,0.2);"></div>
+                        <span>${flower.name}</span>
+                    </div>
+                    <button class="remove-btn" onclick="removeFlowerFromBouquet(${index})">×</button>
+                </div>
+            `).join('');
+        }
+
+        function clearBouquet() {
+            bouquet = [];
+            updateBouquetDisplay();
         }
 
         function finishBouquet() {
-            const bouquetWrapper = document.createElement('div');
-            bouquetWrapper.innerText = 'Your Bouquet:';
-            bouquetWrapper.style.fontSize = '24px';
-            bouquetWrapper.style.marginTop = '20px';
-            bouquetElement.appendChild(bouquetWrapper);
-            displayHearts();
-            const loveCard = document.createElement('div');
-            loveCard.innerHTML = '<h2>🌹 I love you! 🌹</h2>';
-            bouquetElement.appendChild(loveCard);
+            if (bouquet.length === 0) {
+                alert('Please pick at least one flower! 🌸');
+                return;
+            }
+
+            // Create overlay and message
+            const overlay = document.createElement('div');
+            overlay.className = 'overlay';
+            document.body.appendChild(overlay);
+
+            const message = document.createElement('div');
+            message.className = 'finish-message';
+            message.innerHTML = `
+                <div class="bouquet-visual">💐</div>
+                <div class="love-card">💕 I LOVE YOU 💕</div>
+                <p style="color: #999; margin-top: 20px;">Thank you for creating this beautiful bouquet!</p>
+            `;
+            document.body.appendChild(message);
+
+            // Create falling hearts
+            createHeartAnimation();
+
+            // Close after 4 seconds
+            setTimeout(() => {
+                overlay.remove();
+                message.remove();
+            }, 4000);
         }
 
-        function displayHearts() {
-            for (let i = 0; i < 10; i++) {
-                const heart = document.createElement('div');
-                heart.className = 'heart';
-                heart.innerHTML = '&hearts;';
-                heart.style.left = Math.random() * 100 + 'vw';
-                heart.style.top = '0';
-                document.body.appendChild(heart);
-                setTimeout(() =>{
-                    heart.style.opacity = 1;
-                }, 50);
+        function createHeartAnimation() {
+            for (let i = 0; i < 20; i++) {
+                setTimeout(() => {
+                    const heart = document.createElement('div');
+                    heart.className = 'heart-animation';
+                    heart.innerHTML = '❤️';
+                    heart.style.left = Math.random() * window.innerWidth + 'px';
+                    heart.style.top = '-50px';
+                    document.body.appendChild(heart);
+
+                    setTimeout(() => heart.remove(), 3000);
+                }, i * 100);
             }
         }
+
+        // Initialize on page load
+        document.addEventListener('DOMContentLoaded', initializeFlowers);
     </script>
 </body>
 </html>
