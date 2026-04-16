@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bouquet Picker</title>
+    <style>
+        body {
+            font-family: 'Comic Sans MS', cursive, sans-serif;
+            background-color: #fef6e4;
+            margin: 0;
+            padding: 20px;
+            text-align: center;
+        }
+        h1 {
+            color: #4a2074;
+        }
+        .flowers {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .flower {
+            width: 100px;
+            height: 100px;
+            margin: 10px;
+            border-radius: 50%;
+            border: 2px solid #4a2074;
+            cursor: pointer;
+            position: relative;
+            transition: transform 0.2s;
+        }
+        .flower:hover {
+            transform: scale(1.1);
+        }
+        .bouquet {
+            margin-top: 20px;
+            border: 2px dashed #4a2074;
+            padding: 10px;
+            display: inline-block;
+            position: relative;
+        }
+        .finish-button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #4a2074;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .heart {
+            position: absolute;
+            color: red;
+            font-size: 24px;
+            animation: fall 2s forwards;
+            opacity: 0;
+            pointer-events: none;
+        }
+        @keyframes fall {
+            0% {
+                transform: translateY(0);
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(500px);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>Bouquet Picker</h1>
+    <div class="flowers">
+        <div class="flower" style="background-color: #ff6f61;" data-flower="Hibiscus">Hibiscus</div>
+        <div class="flower" style="background-color: #d166d1;" data-flower="Peonies">Peonies</div>
+        <div class="flower" style="background-color: #ffc300;" data-flower="Tulips">Tulips</div>
+        <div class="flower" style="background-color: #f5a623;" data-flower="Alstromelia">Alstromelia</div>
+        <div class="flower" style="background-color: #ff80c6;" data-flower="Gerbera">Gerbera</div>
+        <div class="flower" style="background-color: #82b9a0;" data-flower="Lilium">Lilium</div>
+    </div>
+    <div class="bouquet" id="bouquet"></div>
+    <button class="finish-button" onclick="finishBouquet()">Finish</button>
+    <script>
+        const bouquetElement = document.getElementById('bouquet');
+
+        document.querySelectorAll('.flower').forEach(flower => {
+            flower.addEventListener('click', () => {
+                const flowerName = flower.getAttribute('data-flower');
+                addFlowerToBouquet(flowerName);
+            });
+        });
+
+        function addFlowerToBouquet(flowerName) {
+            const flowerDiv = document.createElement('div');
+            flowerDiv.innerText = flowerName;
+            flowerDiv.style.position = 'relative';
+            flowerDiv.style.display = 'inline-block';
+            flowerDiv.style.padding = '5px';
+            flowerDiv.style.border = '1px solid #4a2074';
+            flowerDiv.style.borderRadius = '5px';
+            flowerDiv.style.margin = '5px';
+            flowerDiv.innerHTML += ' <span style="color:red; cursor:pointer;" onclick="removeFlower(this)">X</span>';
+            bouquetElement.appendChild(flowerDiv);
+        }
+
+        function removeFlower(element) {
+            const flowerDiv = element.parentElement;
+            bouquetElement.removeChild(flowerDiv);
+        }
+
+        function finishBouquet() {
+            const bouquetWrapper = document.createElement('div');
+            bouquetWrapper.innerText = 'Your Bouquet:';
+            bouquetWrapper.style.fontSize = '24px';
+            bouquetWrapper.style.marginTop = '20px';
+            bouquetElement.appendChild(bouquetWrapper);
+            displayHearts();
+            const loveCard = document.createElement('div');
+            loveCard.innerHTML = '<h2>🌹 I love you! 🌹</h2>';
+            bouquetElement.appendChild(loveCard);
+        }
+
+        function displayHearts() {
+            for (let i = 0; i < 10; i++) {
+                const heart = document.createElement('div');
+                heart.className = 'heart';
+                heart.innerHTML = '&hearts;';
+                heart.style.left = Math.random() * 100 + 'vw';
+                heart.style.top = '0';
+                document.body.appendChild(heart);
+                setTimeout(() =>{
+                    heart.style.opacity = 1;
+                }, 50);
+            }
+        }
+    </script>
+</body>
+</html>
